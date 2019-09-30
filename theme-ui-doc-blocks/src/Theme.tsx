@@ -140,7 +140,7 @@ function ColorList({ colors }) {
       sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', py: 2 }}
     >
       {Object.keys(colors).map(color => (
-        <ColorSwatch color={colors[color]} name={color} />
+        <ColorSwatch key={color} color={colors[color]} name={color} />
       ))}
     </div>
   );
@@ -149,56 +149,58 @@ function ColorList({ colors }) {
 function ColorContrastList({ colors }) {
   return (
     <div sx={{ mb: 4 }}>
-      <div sx={{ bg: colors.background, color: colors.text }}>
+      <div sx={{ bg: colors.background, color: colors.text, px: 3, py: 1 }}>
         Contrast for <code>text</code> on <code>background</code> is:{' '}
         {chroma.contrast(colors.background, colors.text)}
         {chroma.contrast(colors.background, colors.text) >= 4.5
           ? ' (enough)'
           : ' (not enough)'}
       </div>
-      <div sx={{ bg: colors.muted, color: colors.text }}>
+      <div sx={{ bg: colors.muted, color: colors.text, px: 3, py: 1 }}>
         Contrast for <code>text</code> on <code>muted</code> is:{' '}
         {chroma.contrast(colors.muted, colors.text)}
         {chroma.contrast(colors.muted, colors.text) >= 4.5
           ? ' (enough)'
           : ' (not enough)'}
       </div>
-      <div sx={{ bg: colors.background, color: colors.primary }}>
+      <div sx={{ bg: colors.background, color: colors.primary, px: 3, py: 1 }}>
         Contrast for <code>primary</code> on <code>background</code> is:{' '}
         {chroma.contrast(colors.background, colors.primary)}
         {chroma.contrast(colors.background, colors.primary) >= 4.5
           ? ' (enough)'
           : ' (not enough)'}
       </div>
-      <div sx={{ bg: colors.background, color: colors.secondary }}>
+      <div
+        sx={{ bg: colors.background, color: colors.secondary, px: 3, py: 1 }}
+      >
         Contrast for <code>secondary</code> on <code>background</code> is:{' '}
         {chroma.contrast(colors.background, colors.secondary)}
         {chroma.contrast(colors.background, colors.secondary) >= 4.5
           ? ' (enough)'
           : ' (not enough)'}
       </div>
-      <div sx={{ bg: colors.primary, color: colors.text }}>
+      <div sx={{ bg: colors.primary, color: colors.text, px: 3, py: 1 }}>
         Contrast for <code>text</code> on <code>primary</code> is:{' '}
         {chroma.contrast(colors.primary, colors.text)}
         {chroma.contrast(colors.primary, colors.text) >= 4.5
           ? ' (enough)'
           : ' (not enough)'}
       </div>
-      <div sx={{ bg: colors.secondary, color: colors.text }}>
+      <div sx={{ bg: colors.secondary, color: colors.text, px: 3, py: 1 }}>
         Contrast for <code>text</code> on <code>secondary</code> is:{' '}
         {chroma.contrast(colors.secondary, colors.text)}
         {chroma.contrast(colors.secondary, colors.text) >= 4.5
           ? ' (enough)'
           : ' (not enough)'}
       </div>
-      <div sx={{ bg: colors.primary, color: colors.muted }}>
+      <div sx={{ bg: colors.primary, color: colors.muted, px: 3, py: 1 }}>
         Contrast for <code>muted</code> on <code>primary</code> is:{' '}
         {chroma.contrast(colors.primary, colors.muted)}
         {chroma.contrast(colors.primary, colors.muted) >= 4.5
           ? ' (enough)'
           : ' (not enough)'}
       </div>
-      <div sx={{ bg: colors.secondary, color: colors.muted }}>
+      <div sx={{ bg: colors.secondary, color: colors.muted, px: 3, py: 1 }}>
         Contrast for <code>muted</code> on <code>secondary</code> is:{' '}
         {chroma.contrast(colors.secondary, colors.muted)}
         {chroma.contrast(colors.secondary, colors.muted) >= 4.5
@@ -220,12 +222,74 @@ function Colors({ colors }) {
   );
 }
 
+function SpaceScale({ steps }) {
+  return (
+    <div sx={{ display: 'flex', flexDirection: 'column', my: 3 }}>
+      {steps.map(step => (
+        <div
+          key={step}
+          sx={{
+            width: `${step}px`,
+            textAlign: 'center',
+            color: 'white',
+            textShadow: '0px 0px 8px black',
+            bg: 'primary',
+          }}
+        >
+          {step}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SpaceBoxes({ steps }) {
+  const temp = [...steps];
+  return (
+    <div
+      sx={{
+        width: steps[steps.length - 1],
+        height: steps[steps.length - 1],
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        display: 'flex',
+        bg: 'primary',
+        my: 3,
+      }}
+    >
+      {temp.reverse().map(step => (
+        <div
+          key={step}
+          sx={{
+            bg: '#ffffff44',
+            border: `1px solid black`,
+            pr: `${step}px`,
+            pb: `${step}px`,
+            position: 'absolute',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function Space({ space }) {
+  return (
+    <Styled.root>
+      <Styled.h2>Space</Styled.h2>
+      <SpaceScale steps={space} />
+      <SpaceBoxes steps={space} />
+    </Styled.root>
+  );
+}
+
 function Theme({ theme: propTheme }) {
   const { theme: contextTheme } = useThemeUI();
   const theme = propTheme || contextTheme || base;
   return (
     <ThemeProvider theme={theme}>
       <Colors colors={theme.colors} />
+      {theme.space && <Space space={theme.space} />}
     </ThemeProvider>
   );
 }
