@@ -338,9 +338,11 @@ function Theme({ theme: propTheme }) {
   const theme = propTheme || contextTheme || base;
   return (
     <ThemeProvider theme={theme}>
-      <Colors colors={theme.colors} />
-      {theme.space && <Space space={theme.space} />}
-      <Typography theme={theme} />
+      <div sx={{ bg: 'background' }}>
+        <Colors colors={theme.colors} />
+        {theme.space && <Space space={theme.space} />}
+        <Typography theme={theme} />
+      </div>
     </ThemeProvider>
   );
 }
