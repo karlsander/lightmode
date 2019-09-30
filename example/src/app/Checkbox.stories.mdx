@@ -4,12 +4,11 @@ import { Theme } from "theme-ui-doc-blocks";
 import { swiss, funk, base, github, future } from "@theme-ui/presets";
 import ninersTheme from "../../../../staffbase-niners/src/gatsby-plugin-theme-ui/index.js";
 
-<Meta title="Themes|Base" component={Checkbox} />
+<Meta title="Themes|All" />
 
-# Checkbox
+# Theme
 
-With `MDX` we can define a story for `Checkbox` right in the middle of our
-markdown documentation.
+With `MDX` we can write about the theme right in the middle of our stories.
 
 <Theme theme={base} />
 
@@ -18,11 +17,3 @@ markdown documentation.
 <Theme theme={funk} />
 
 <Theme theme={github} />
-
-<Preview>
-  <form>
-    <Checkbox id="Unchecked" label="Unchecked" />
-    <Checkbox id="Checked" label="Checked" checked />
-    <Checkbox appearance="secondary" id="second" label="Secondary" checked />
-  </form>
-</Preview>
