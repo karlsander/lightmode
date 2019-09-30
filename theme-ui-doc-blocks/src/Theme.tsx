@@ -50,7 +50,19 @@ function ColorSwatch({ color, name }) {
           px: 3,
         }}
       >
-        <div sx={{ fontWeight: 'bold' }}>{name}</div>
+        <div
+          onClick={() => copy(name)}
+          sx={{
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            ':hover': {
+              opacity: 1,
+              color: color,
+            },
+          }}
+        >
+          {name}
+        </div>
         <div
           onClick={() => copy(hex)}
           sx={{
@@ -225,7 +237,7 @@ function Colors({ colors }) {
 function SpaceScale({ steps }) {
   return (
     <div sx={{ display: 'flex', flexDirection: 'column', my: 3 }}>
-      {steps.map(step => (
+      {steps.map((step, index) => (
         <div
           key={step}
           sx={{
@@ -236,7 +248,7 @@ function SpaceScale({ steps }) {
             bg: 'primary',
           }}
         >
-          {step}
+          [{index}]:&nbsp;{step}
         </div>
       ))}
     </div>
@@ -283,6 +295,44 @@ function Space({ space }) {
   );
 }
 
+function FontSizes({ sizes }) {
+  return (
+    <div sx={{ display: 'flex', alignItems: 'center' }}>
+      {sizes.map((size, index) => (
+        <span sx={{ fontSize: size }}>
+          [{index}] {size}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function FontFamilies({ fonts }) {
+  return (
+    <div>
+      {Object.keys(fonts).map(label => (
+        <div key={label} sx={{ fontFamily: fonts[label] }}>
+          {label}: {fonts[label]}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Typography({
+  theme: { fonts, fontSizes, textStyles, fontWeights, lineHeights },
+}) {
+  return (
+    <Styled.root>
+      <Styled.h2>Typography</Styled.h2>
+      <Styled.h3>Font Families</Styled.h3>
+      <FontFamilies fonts={fonts} />
+      <Styled.h3>Font Sizes</Styled.h3>
+      <FontSizes sizes={fontSizes} />
+    </Styled.root>
+  );
+}
+
 function Theme({ theme: propTheme }) {
   const { theme: contextTheme } = useThemeUI();
   const theme = propTheme || contextTheme || base;
@@ -290,6 +340,7 @@ function Theme({ theme: propTheme }) {
     <ThemeProvider theme={theme}>
       <Colors colors={theme.colors} />
       {theme.space && <Space space={theme.space} />}
+      <Typography theme={theme} />
     </ThemeProvider>
   );
 }
